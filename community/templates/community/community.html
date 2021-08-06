@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+{%for post in posts%}
+    {{post.title}}
+{%endfor%}
+
+{% endblock %}
