@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1>
+        {% if 'user' in user.username and user.username != 'user' %}
+            {{ user.last_name }}{{ user.first_name }}
+        {% else %}
+            {{ user.username }}
+        {% endif %}
+    {% if request.user != user %}<!--다른 사람의 프로필에 들어온 경우에만 팔로우/언팔로우 버튼이보임-->
+        {% if request.user.profile in user.profile.followers.all %}
+            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-outline-info">언팔로우</button></a>
+        {% else %}
+            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-info">팔로우</button></a>
+        {% endif %}
+    {% endif %}
+    </h1>
+    {%for post in ComPosts%}
+        {{post.title}}
+    {%endfor%}
+{% endblock %}
