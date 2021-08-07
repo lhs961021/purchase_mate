@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<section style="margin:0px 200px; margin-top:80px;">
+    <h1> 공동구매 종합정보 </h1>
+    <div>
+    {%if post.image%}
+    <p>사진 : <img src="{{post.image.url}}" alt="사진"></p>
+    {%endif%}
+        카테고리 : {{post.category}} <br>
+        상품명 : {{post.title}} <br>
+        작성자 : {{post.writer}} <br>
+        업로드날짜 : {{post.pub_date}} <br>
+        마감날짜 : {{post.deadline}} <br>
+        수량 : {{post.quantity}} 개 <br>
+        총가격 : {{post.price}} 원 <br>
+        목표인원 : {{post.people}} 명 <br>
+        오픈채팅방 주소 : {{post.chat}} <br>
+    </div>
+    <br>
+    {% comment %} {% if user == post.writer %} {% endcomment %}
+    <a href="{%url 'posts:edit' post.id%}" class="btn btn-dark">수정하기</a>
+    <a href="{%url 'posts:delete' post.id%}" class="btn btn-dark">삭제하기</a>
+    {% comment %} {% endif %} {% endcomment %}
+
+</section>
+{% endblock %}
