@@ -34,6 +34,11 @@
                                 <li><a href="{% url 'posts:makepost' %}">글쓰기</a></li>
                             </ul>
                         </li>
+                        <li><a href="{% url 'community:community' %}">Community</a>
+                            <ul class="header__menu__dropdown">
+                                <li><a href="{% url 'community:new' %}">글쓰기</a></li>
+                            </ul>
+                        </li>
                         <li><a href="#">Accounts</a>
                             <ul class="header__menu__dropdown">
                                 {%if request.user.is_authenticated%}

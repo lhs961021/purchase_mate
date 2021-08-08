@@ -9,7 +9,8 @@ def mypage(request, id):
     context = {
         "user": user,
         "ComPosts": ComPost.objects.filter(writer=user),
-        "Posts" "followings": user.profile.followings.all(),
+        "Posts": Post.objects.filter(writer=user),
+        "followings": user.profile.followings.all(),
         "followers": user.profile.followers.all(),
     }
     return render(request, "users/mypage.html", context)
@@ -46,7 +47,8 @@ def user_posts(request, id):  # 다른 사람들도 접속하면 볼 수 있는 
     context = {
         "user": user,
         "ComPosts": ComPost.objects.filter(writer=user),
-        "Posts" "followings": user.profile.followings.all(),
+        "Posts": Post.objects.filter(writer=user),
+        "followings": user.profile.followings.all(),
         "followers": user.profile.followers.all(),
     }
 

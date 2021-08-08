@@ -24,7 +24,4 @@
         <a href="{%url 'users:edit' %}">개인정보 수정하기</a>
     {%endif%}
     <a href="{%url 'users:user_posts' user.id%}">올린 글 보러가기</a>
-    {%for post in ComPosts%}
-        {{post.title}}
-    {%endfor%}
 {% endblock %}
