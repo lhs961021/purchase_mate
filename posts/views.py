@@ -100,3 +100,9 @@ def delete(request,id):
     delete_post = Post.objects.get(id = id)
     delete_post.delete()
     return redirect('posts:all_postlist')
+
+def result(request):
+    query=request.GET['query']
+    if query:
+            posts =Post.objects.filter(title__contains=query)
+    return render(request, 'result.html', {'posts':posts})

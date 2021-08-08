@@ -24,4 +24,6 @@ urlpatterns = [
     path('category/daily_necessity/',daily_necessity,name="daily_necessity"),
     path('category/ott/',ott,name="ott"),
     path('category/etc/',etc,name="etc"),
+    #검색
+    path('result/',result,name="result"),
 ]
