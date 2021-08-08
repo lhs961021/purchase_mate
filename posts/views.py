@@ -1,6 +1,12 @@
 from django.shortcuts import get_object_or_404, redirect, render
+from django.http import HttpResponse
 from .models import Post
 from django.utils import timezone
+from map.models import Search
+from map.forms import SearchForm
+import folium
+import geocoder
+
 
 # Create your views here.
 def showmain(request):
@@ -74,6 +80,7 @@ def create(request):
     makepost_post.category=request.POST['category']
     makepost_post.image=request.FILES.get('image')
     makepost_post.chat=request.POST['chat']
+    makepost_post.spot=request.POST['spot']
     makepost_post.save()
     return redirect ('posts:detail',makepost_post.id)
 
@@ -93,6 +100,7 @@ def update(request, id):
     update_post.category=request.POST['category']
     update_post.image=request.POST['image']
     update_post.chat=request.POST['chat']
+    update_post.spot=request.POST['spot']
     update_post.save()
     return redirect('posts:detail',update_post.id)
 
@@ -106,3 +114,4 @@ def result(request):
     if query:
             posts =Post.objects.filter(title__contains=query)
     return render(request, 'result.html', {'posts':posts})
+
