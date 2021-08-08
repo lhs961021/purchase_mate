@@ -26,4 +26,5 @@ urlpatterns = [
     path("community/", include("community.urls")),
     path("accounts/", include("allauth.urls")),
     path("users/", include("users.urls")),
+    path("map/",include("map.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
