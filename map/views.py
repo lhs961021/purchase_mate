@@ -14,7 +14,7 @@ def map(request):
             return redirect('/map/')
     else:
         form = SearchForm()
-    address = Search.objects.all()
+    address = request.user.profile.address
     location = geocoder.osm(address)
     lat = location.lat
     lng = location.lng
@@ -24,7 +24,7 @@ def map(request):
         return HttpResponse('잘못된 주소입니다! 새로고침을 눌러 다시 검색해주세요!')
 
     # Map Object 만들기
-    m = folium.Map(location=[19, -12], zoom_start=2)
+    m = folium.Map(location=[lat, lng], zoom_start=20)
 
     folium.Marker([lat, lng], tooltip='Click for more', 
                     popup=country).add_to(m)
