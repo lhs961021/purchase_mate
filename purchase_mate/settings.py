@@ -149,4 +149,4 @@ SITE_ID = 1
 
 LOGIN_REDIRECT_URL = "/"
 
-ACCOUNT_SIGNUP_FORM_CLASS = "users.forms.SignupForm"
+ACCOUNT_FORMS = {'signup': 'users.forms.SignupForm'}
