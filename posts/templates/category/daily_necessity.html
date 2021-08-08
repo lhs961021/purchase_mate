@@ -16,7 +16,7 @@
             <img src="../../static/images/main.png"
                 style="width:15vh; height:15vh; position:relative; top:2.5vh; left:2.5vh;">
             {%endif%} -->
-            <img src="../../../static/images/plates_icon.svg" style="width:100%; height:100%;" alt="daily_necessity">
+            <img src="{%static 'images/plates_icon.svg'%}" width="100%" ; height="100%" ; alt="daily_necessity" >
         </div>
         <div style="display:flex; flex-direction: column; justify-content: space-around;">
             <a href="{%url 'posts:detail' post.id%}" style="text-decoration:none; ">
