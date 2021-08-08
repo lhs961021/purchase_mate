@@ -34,6 +34,17 @@
                                 <li><a href="{% url 'posts:makepost' %}">글쓰기</a></li>
                             </ul>
                         </li>
+                        <li><a href="#">Accounts</a>
+                            <ul class="header__menu__dropdown">
+                                {%if request.user.is_authenticated%}
+                                    <li><a href="{% url 'users:mypage' request.user.id%}">Mypage</a></li>
+                                    <li><a href="{% url 'account_logout' %}">Logout</a></li>
+                                {%else%}
+                                    <li><a href="{% url 'account_login' %}">Login</a></li>
+                                    <li><a href="{% url 'account_signup' %}">Signup</a></li>
+                                {%endif%}
+                            </ul>
+                        </li>
                     </ul>
                 </nav>
             </div>

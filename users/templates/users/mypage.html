@@ -15,6 +15,15 @@
         {% endif %}
     {% endif %}
     </h1>
+    <h6>
+        이름: {{user.profile.name}} <br>
+        전화번호: {{user.profile.phnum}} <br>
+        자취방 주소: {{user.profile.address}} <br>
+    </h6>
+    {%if request.user == user%}
+        <a href="{%url 'users:edit' %}">개인정보 수정하기</a>
+    {%endif%}
+    <a href="{%url 'users:user_posts' user.id%}">올린 글 보러가기</a>
     {%for post in ComPosts%}
         {{post.title}}
     {%endfor%}
