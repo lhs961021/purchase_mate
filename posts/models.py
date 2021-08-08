@@ -19,6 +19,7 @@ class Post(models.Model):
     category = models.CharField(max_length=20)
     image = models.ImageField(upload_to="blog/", blank=True, null=True)
     chat = models.CharField(max_length=200, null=True)
+    spot = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return self.title

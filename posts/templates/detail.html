@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+{% load crispy_forms_tags %}
 <section style="margin:0px 200px; margin-top:80px;">
     <h1> 공동구매 종합정보 </h1>
     <div>
@@ -16,6 +17,7 @@
         총가격 : {{post.price}} 원 <br>
         목표인원 : {{post.people}} 명 <br>
         오픈채팅방 주소 : {{post.chat}} <br>
+        공동구매 픽업 주소 : {{post.spot}} <br>
     </div>
     <br>
     {% comment %} {% if user == post.writer %} {% endcomment %}
