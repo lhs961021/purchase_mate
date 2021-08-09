@@ -10,4 +10,5 @@ urlpatterns = [
     path("edit/", edit, name="edit"),
     path("update/", update, name="update"),
     path("<int:id>/posts", user_posts, name="user_posts"),
+    path('<int:id>/follow_count/',follow_count,name="follow_count"),
 ]

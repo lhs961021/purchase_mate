@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div style= "margin:0px 200px; margin-top:80px; font-family: 'Noto Sans KR', sans-serif;">
+
 <section>
 	<form action="{%url 'community:update' post.id%}" method="post" enctype="multipart/form-data">
 		{%csrf_token%}
@@ -10,4 +12,6 @@
 		<button type="submit">제출</button>
 	</form>	
 </section>
+<div>
+<br>
 {% endblock %}

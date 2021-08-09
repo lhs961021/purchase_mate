@@ -10,7 +10,7 @@
     {%endif%}
         카테고리 : {{post.category}} <br>
         상품명 : {{post.title}} <br>
-        작성자 : {{post.writer}} <br>
+        작성자 : <a href="{% url  'users:mypage' post_writer.id%}">{{post.writer}} </a><br>
         업로드날짜 : {{post.pub_date}} <br>
         마감날짜 : {{post.deadline}} <br>
         수량 : {{post.quantity}} 개 <br>
@@ -30,4 +30,5 @@
     {% comment %} {% endif %} {% endcomment %}
 
 </section>
+<br>
 {% endblock %}
