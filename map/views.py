@@ -5,6 +5,7 @@ from .forms import SearchForm
 from posts.models import Post
 import folium
 import geocoder
+import math
 # Create your views here.
 
 def map(request,id):
@@ -41,8 +42,22 @@ def map(request,id):
                     popup=country).add_to(m)
     # Get HTML Representation of Map Object
     m = m._repr_html_()
+    
+
+    radius = 6371  # km
+ 
+    dlat = math.radians(spot_lat-lat)
+    dlon = math.radians(spot_lng-lng)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = radius * c
+
     context = {
         'm' : m,
-        'form' : form, 
+        'form' : form,
+        "d": d, 
     }
+
     return render(request, "map/map.html", context)
+
