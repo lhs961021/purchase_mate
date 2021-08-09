@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from .models import Post
+from users.models import Profile
 from django.utils import timezone
 from .forms import SpotForm
 import folium
@@ -65,7 +66,9 @@ def makepost(request):
 
 def detail(request,id):
     post = get_object_or_404(Post, pk=id)
-    return render(request,'detail.html',{'post':post})
+    post_writer=Profile.objects.get(user=post.writer)
+   
+    return render(request,'detail.html',{'post':post,'post_writer':post_writer})
 
 def create(request):
     makepost_post = Post()

@@ -1,8 +1,12 @@
-<h1>상품</h1>
-{%for post in Posts%}
-    {{post.title}}
-{%endfor%}
-<h1>일반 커뮤니티</h1>
-{%for post in ComPosts%}
-    {{post.title}}
-{%endfor%}
+<div style="background-size:100%; height:600px;">
+    <div style="width:50%; height:100%; margin:150px auto; ">
+        <h1>상품</h1>
+        {%for post in Posts%}
+        {{post.title}}
+        {%endfor%}
+        <h1>일반 커뮤니티</h1>
+        {%for post in ComPosts%}
+        {{post.title}}
+        {%endfor%}
+    </div>
+</div>

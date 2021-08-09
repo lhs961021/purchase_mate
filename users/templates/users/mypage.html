@@ -1,27 +1,73 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <h1>
-        {% if 'user' in user.username and user.username != 'user' %}
-            {{ user.last_name }}{{ user.first_name }}
-        {% else %}
-            {{ user.username }}
-        {% endif %}
-    {% if request.user != user %}<!--다른 사람의 프로필에 들어온 경우에만 팔로우/언팔로우 버튼이보임-->
-        {% if request.user.profile in user.profile.followers.all %}
-            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-outline-info">언팔로우</button></a>
-        {% else %}
-            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-info">팔로우</button></a>
-        {% endif %}
-    {% endif %}
-    </h1>
-    <h6>
-        이름: {{user.profile.name}} <br>
-        전화번호: {{user.profile.phnum}} <br>
-        자취방 주소: {{user.profile.address}} <br>
-    </h6>
-    {%if request.user == user%}
-        <a href="{%url 'users:edit' %}">개인정보 수정하기</a>
-    {%endif%}
-    <a href="{%url 'users:user_posts' user.id%}">올린 글 보러가기</a>
+
+<br>
+<div style="display:flex;">
+    <div style="width:35%; padding:20px;">
+        <p>
+            <div style="text-align: center; padding: 10px 0;">
+                <img style="width: 30%;" src="../../../static/img/user.png" alt="사진이어디갔징">
+                <br>
+                <br>
+                <div style="text-align: right;">
+                    {% if request.user != user.user %}<!--다른 사람의 프로필에 들어온 경우에만 팔로우/언팔로우 버튼이보임-->
+                        {% if request.user.profile in user.followers.all %}
+                            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-outline-info">언팔로우</button></a>
+                        {% else %}
+                            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-info">팔로우</button></a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            <div style="padding: 30px; border: 2px inset black; width:100%; text-align:center; word-break:break-all;">
+                    
+                    <h6>id: {{user.user}}</h6>
+                    <h6>사용자: {{user.name}}</h6>
+                    
+
+                    {% if request.user == user.user %}
+                    <h6>번호: {{user.phnum}}</h6>
+                    <h6>자취방: {{user.address}}</h6>
+                    <input type="button" class="btn btn-default" style="color: brown; width:100%;"
+                        onclick="changeIframeUrl('{%url 'users:introduce'%}')" value="사용방법"> <br>
+                    <input type="button" class="btn btn-default" style="color: brown; width:100%;"
+                        onclick="changeIframeUrl('{%url 'users:edit'%}')" value="내 정보 수정하기"> <br>
+                    <input type="button" class="btn btn-default" style="color: brown; width:100%;"
+                        onclick="changeIframeUrl('{%url 'users:user_posts' user.id%}')" value="내가 올린글">
+                    {% else %}
+                    <input type="button" class="btn btn-default" style="color: brown; width:100%;"
+                        onclick="changeIframeUrl('{%url 'users:user_posts' user.id%}')" value="{{user.user}}이(가) 올린글">
+                    {%endif%}
+                    <input type="button" class="btn btn-default" style="color: brown; width:100%;"
+                        onclick="changeIframeUrl('{%url 'users:follow_count' user.id%}')" value="팔로잉 팔로워">
+                    
+
+
+                
+            </div>
+        </p>
+    </div>
+    <div style="width:65%; padding:20px;">
+        {% if request.user == user.user %}  
+        <iframe id="main_frame" name="main_frame" src="{%url 'users:introduce' %}"
+            style="width:100%; height:600px; border:none;"></iframe>
+        {%else%}
+        <iframe id="main_frame" name="main_frame" src="{%url 'users:follow_count' user.id %}"
+            style="width:100%; height:600px; border:none;"></iframe>
+        {%endif%}
+
+    </div>
+</div>
+<script>
+    function changeIframeUrl(url)
+
+    {
+
+        document.getElementById("main_frame").src = url;
+
+    }
+</script>
+
+
 {% endblock %}

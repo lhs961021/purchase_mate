@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
+<div style= "margin:0px 200px; margin-top:80px; font-family: 'Noto Sans KR', sans-serif;">
 
 {% for post in posts %}
     <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh; border:solid green 3px; border-radius:10%; background-color:#aad4b3;">
@@ -26,5 +27,6 @@
 {%empty%}
     검색 결과가 없습니다.
 {% endfor %}
-
+</div>
+<br>
 {%endblock%}
