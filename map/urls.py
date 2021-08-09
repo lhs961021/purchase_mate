@@ -4,5 +4,5 @@ from .views import *
 app_name = "map"
 
 urlpatterns = [
-    path("", map, name="map"),
+    path("<str:id>", map, name="map"),
 ]

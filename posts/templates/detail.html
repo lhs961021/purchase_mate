@@ -20,6 +20,10 @@
         공동구매 픽업 주소 : {{post.spot}} <br>
     </div>
     <br>
+    <p>내 주소와 픽업 장소 거리 확인하기<p>
+    <a href="{% url 'map:map' post.id %}" class="btn btn-dark">지도보기</a>
+
+    <br><br><br>
     {% comment %} {% if user == post.writer %} {% endcomment %}
     <a href="{%url 'posts:edit' post.id%}" class="btn btn-dark">수정하기</a>
     <a href="{%url 'posts:delete' post.id%}" class="btn btn-dark">삭제하기</a>
