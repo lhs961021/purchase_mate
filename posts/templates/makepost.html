@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<section style="margin:0px 200px; margin-top:80px;">
-<h1> 게시물 작성하기 </h1><br>
 
-<form action="{%url 'posts:create'%}" method="post" enctype="multipart/form-data">
+{% if user.is_authenticated %}
+    <section style="margin:0px 200px; margin-top:80px;">
+    <h1> 게시물 작성하기 </h1><br>
+
+    <form action="{%url 'posts:create'%}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p>카테고리:<label for="category"></label>
         <select name="category" id="category">
@@ -24,5 +26,13 @@
     <br><button type="submit">제출</button>
 </form>
 </section>
+
+{% else %}
+    <h3>로그인 후 이용가능</h3>
+    <ul class="actions">
+        <li><a href="{% url 'account_login'%}" class="button icon solid fa-file">로그인</a></li>
+        <li><a href="{% url 'account_signup'%}" class="button icon solid fa-file">회원가입</a></li>
+    </ul>
 <br>
+{%endif%}
 {% endblock %}

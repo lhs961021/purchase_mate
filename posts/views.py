@@ -52,7 +52,7 @@ def deadline_postlist(request):
     return render(request,'sort/deadline_postlist.html',{'post':post})
 
 def distance_postlist(request):
-    post=Post.objects.all()
+    post=Post.objects.all('spot')
     return render(request,'sort/distance_postlist.html',{'post':post})
 
 def price_postlist(request):
