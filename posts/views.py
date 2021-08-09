@@ -2,8 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 from .models import Post
 from django.utils import timezone
-from map.models import Search
-from map.forms import SearchForm
+from .forms import SpotForm
 import folium
 import geocoder
 

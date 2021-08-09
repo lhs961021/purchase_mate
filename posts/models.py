@@ -23,3 +23,10 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Spot(models.Model):
+    spot = models.CharField(max_length=200, null=True)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.spot
