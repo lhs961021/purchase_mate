@@ -1,12 +1,27 @@
+<script language="javascript" type="text/javascript">
+    function open_parent_p(t) {
+       
+        a="../../shop/"+t
+        console.log(a)
+        window.parent.location.href = a;
+    }
+    function open_parent_c(t) {
+       
+       a="../../community/"+t
+       console.log(a)
+       window.parent.location.href = a;
+   }
+</script>
+
 <div style="background-size:100%; height:600px;">
     <div style="width:50%; height:100%; margin:150px auto; ">
         <h1>상품</h1>
         {%for post in Posts%}
-        {{post.title}}
+            <a href="" onclick="open_parent_p({{post.id}})">{{post.title}}</a>
         {%endfor%}
         <h1>일반 커뮤니티</h1>
         {%for post in ComPosts%}
-        {{post.title}}
+            <a href="" onclick="open_parent_c({{post.id}})">{{post.title}}</a>
         {%endfor%}
     </div>
 </div>
