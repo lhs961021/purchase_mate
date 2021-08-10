@@ -20,10 +20,10 @@
         공동구매 픽업 주소 : {{post.spot}} <br>
     </div>
     <br>
-    <h3>현재 내 위치와 공동구매 픽업 장소 위치 사이의 거리는 {{map.d}}km 입니다.</h3>
+    <div>내 집주소 - 공동구매 픽업 장소 사이 거리 : {{distance}}km </div>
     <br>
-    <p>내 주소와 픽업 장소 거리 확인하기<p>
-    <a href="{% url 'map:map' post.id %}" class="btn btn-dark">지도보기</a>
+    
+    <a href="{% url 'posts:map' post.id %}" class="btn btn-dark">지도보기</a>
 
     <br><br><br>
     {% comment %} {% if user == post.writer %} {% endcomment %}
