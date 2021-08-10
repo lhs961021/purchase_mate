@@ -13,15 +13,53 @@
    }
 </script>
 
-<div style="background-size:100%; height:600px;">
-    <div style="width:50%; height:100%; margin:150px auto; ">
-        <h1>상품</h1>
-        {%for post in Posts%}
-            <a href="" onclick="open_parent_p({{post.id}})">{{post.title}}</a>
-        {%endfor%}
+<div >
+    <div style="width:50%;  margin:150px auto; ">
         <h1>일반 커뮤니티</h1>
         {%for post in ComPosts%}
             <a href="" onclick="open_parent_c({{post.id}})">{{post.title}}</a>
         {%endfor%}
     </div>
+</div>
+<div style="background-size:100%; height:600px;">
+    
+        {%for post in Posts%}
+        <hr>
+        <div style="display:flex; margin: 10px 0px; height: 20vh;">
+            <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh; border-radius:10%;">
+                <!-- {%if post.image%}
+            <img src="{{ post.image.url }}" style="object-fit: cover; width:100%; height: 100%;" alt="사진">
+            {%else%}
+            <img src="../../static/images/main.png"
+                style="width:15vh; height:15vh; position:relative; top:2.5vh; left:2.5vh;">
+            {%endif%} -->
+                {%if post.image%}
+                <img src="{{ post.image.url }}" style="object-fit: cover; width:100%; height: 100%;" alt="사진">
+                {%else%}
+                {%if post.category == '식자재'%}
+                <img src="../../static/img/default/vegetable_icon.svg"
+                    style=" border-radius:10%; background-color:lightgray; width:100%; height:100%;" alt="food">
+                {%elif post.category == '생필품'%}
+                <img src="../../static/img/default/plates_icon.svg"
+                    style=" border-radius:10%; background-color:lightgray; width:100%; height:100%;"
+                    alt="daily_necessity">
+                {%elif post.category == 'OTT 서비스'%}
+                <img src="../../static/img/default/netflix_icon.svg"
+                    style=" border-radius:10%; background-color:lightgray; width:100%; height:100%;" alt="ott">
+                {%else%}
+                <img src="../../static/img/default/etc_icon.svg"
+                    style=" border-radius:10%; background-color:lightgray; width:100%; height:100%;" alt="etc">
+                {%endif%}
+                {%endif%}
+            </div>
+            <div style="display:flex; flex-direction: column; justify-content: space-around;">
+                <a href="{%url 'posts:detail' post.id%}" style="text-decoration:none; ">
+                    <h3 style="color:black; font-family: 'Nanum Gothic Coding', sans-serif;">{{post.title}}</h3>
+                </a>
+                상품명 : {{post.title}}
+
+            </div>
+        </div>
+        {%endfor%}
+    
 </div>
