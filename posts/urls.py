@@ -6,6 +6,11 @@ app_name = "posts"
 urlpatterns = [
     path("",shop, name="shop"),
     path("shop_detail/",shop_detail, name="shop_detail"),
+
+    #map
+    path("<str:id>/map", map, name="map"),
+
+
     #정렬부분
     path("recent_postlist/",recent_postlist,name="recent_postlist"),
     path("all_postlist/",all_postlist,name="all_postlist"),
