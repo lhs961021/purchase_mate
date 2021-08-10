@@ -14,8 +14,19 @@ def index(request):
         shop_follow.sort(reverse=True, key=lambda x: x.pub_date)  # 최근 올라온 날짜대로 정렬
     shop_all += list(Post.objects.all())
     shop_all.sort(reverse=True, key=lambda x: x.pub_date)
+
+    c=0
+  
+    for i in shop_follow:
+        c+=1
+    if c==0:
+        c=True
+    else:
+        c=False
+
+   
     return render(
         request,
         "index.html",
-        {"shop_follow": shop_follow[:4], "shop_all": shop_all[:4]},
+        {"shop_follow": shop_follow, "shop_all": shop_all,"c":c},
     )

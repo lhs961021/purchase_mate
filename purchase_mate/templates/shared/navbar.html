@@ -3,15 +3,15 @@
 <div class="humberger__menu__overlay"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="{% static 'img/logo.png' %}" alt=""></a>
+        <a href="#"><img style="width:70px; text-align:center;" src="{% static 'img/logo.png' %}" alt=""></a>
     </div>
 
     <nav class="humberger__menu__nav mobile-menu">
         <ul>
             <li class="active"><a href="{% url 'index' %}">Home</a></li>
-            <li><a href="{% url 'posts:all_postlist'%}">Purchase List</a></li>
-            <li><a href="{% url 'posts:makepost' %}">Items Registration</a></li>
-            <li><a href="{% url 'community:community' %}">Community</a>
+            <li><a href="{% url 'posts:all_postlist'%}">공구 리스트</a></li>
+            <li><a href="{% url 'posts:makepost' %}">공구 품목 등록</a></li>
+            <li><a href="{% url 'community:community' %}">커뮤니티</a>
             {%if request.user.is_authenticated%}
             <li><a href="{% url 'users:mypage' request.user.id%}">Mypage</a></li>
             <li><a href="{% url 'account_logout' %}">Logout</a></li>
@@ -30,21 +30,24 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <div class="header__logo">
-                    <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                <div style="text-align:center;" class="header__logo">
+                    <a href="{% url 'index' %}"><img style="width:95px;" src="{% static 'img/logo.png' %}" alt=""></a>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <nav class="header__menu" style="text-align: center;">
+            <div class="col-lg-6" >
+                <nav class="header__menu" style="text-align: center; margin-top:20px;" >
                     <ul>
                         <li><a href="{% url 'index' %}">Home</a></li>
-                        <li><a href="{% url 'posts:all_postlist'%}">Purchase List</a>
+                        <li><a href="{% url 'posts:all_postlist'%}">공구</a>
+                            
                             <ul class="header__menu__dropdown">
-                                <li><a href="{% url 'posts:makepost' %}">Items Registration</a></li>
+                                <li><a href="{% url 'posts:all_postlist' %}">공구 리스트</a></li>
+                                <li><a href="{% url 'posts:makepost' %}">공구 품목 등록</a></li>
                             </ul>
                         </li>
-                        <li><a href="{% url 'community:community' %}">Community</a>
+                        <li><a href="{% url 'community:community' %}">커뮤니티</a>
                             <ul class="header__menu__dropdown">
+                                <li><a href="{% url 'community:community' %}">커뮤니티 목록</a></li>
                                 <li><a href="{% url 'community:new' %}">글쓰기</a></li>
                             </ul>
                         </li>
@@ -53,7 +56,7 @@
                 </nav>
             </div>
             <div class="col-lg-3">
-                <div class="header__menu" style="text-align: center;">
+                <div class="header__menu" style="text-align: center;  margin-top:20px;">
                     <ul>
                         <li><a href="">Accounts</a>
                             <ul class="header__menu__dropdown">
@@ -71,7 +74,7 @@
                 </div>
             </div>
         </div>
-        <div class="humberger__open">
+        <div class="humberger__open" style=" margin-top:20px;">
             <i class="fa fa-bars"></i>
         </div>
     </div>
