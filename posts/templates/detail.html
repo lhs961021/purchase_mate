@@ -4,13 +4,16 @@
 {% load crispy_forms_tags %}
 <section style="margin:0px 200px; margin-top:80px;">
     <h1> 공동구매 종합정보 </h1>
+    <br>
+    <br>
+
     <div>
     {%if post.image%}
     <p>사진 : <img src="{{post.image.url}}" alt="사진"></p>
     {%endif%}
         카테고리 : {{post.category}} <br>
         상품명 : {{post.title}} <br>
-        작성자 : <a href="{% url  'users:mypage' post_writer.id%}">{{post.writer}} </a><br>
+        작성자 : <a style="text-decoration:none; color:black; font-family: 'Nanum Gothic Coding', sans-serif;"  href="{% url  'users:mypage' post_writer.id%}">{{post.writer}} </a><br>
         업로드날짜 : {{post.pub_date}} <br>
         마감날짜 : {{post.deadline}} <br>
         수량 : {{post.quantity}} 개 <br>

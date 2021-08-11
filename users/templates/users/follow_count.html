@@ -14,11 +14,11 @@
             <h3>팔로워{{user.profile.followers.count}}명</h3> 
             {%for follower in user.profile.followers.all %}
             
-            <a href="" onclick="open_parent({{follower.user.id}})">{{follower.user.username}}</a> 
+            <a style="text-decoration:none; color:black; font-family: 'Nanum Gothic Coding', sans-serif;" href="" onclick="open_parent({{follower.user.id}})">{{follower.user.username}}</a> 
             {% endfor %}
             <h3>팔로잉{{user.profile.followings.count}}명</h3> 
             {% for following in user.profile.followings.all %}
-            <a href="" onclick="open_parent({{following.user.id}})">{{following.user.username}}</a> 
+            <a style="text-decoration:none; color:black; font-family: 'Nanum Gothic Coding', sans-serif;" href="" onclick="open_parent({{following.user.id}})">{{following.user.username}}</a> 
             {% endfor %}
         </div>
     </div>
