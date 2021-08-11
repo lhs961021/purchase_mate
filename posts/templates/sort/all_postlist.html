@@ -55,7 +55,11 @@
                 <a href="{%url 'posts:detail' post.id%}" style="text-decoration:none; ">
                     <h3 style="color:black; font-family: 'Nanum Gothic Coding', sans-serif;">{{post.title}}</h3>
                 </a>
-                상품명 : {{post.title}}
+                <div style=" display:block;">
+                모집인원 : {{post.people}} 명<br>
+                공구 마감일 : {{post.deadline}}<br>
+                작성자 : <a style="text-decoration:none; color:black; font-family: 'Nanum Gothic Coding', sans-serif;" href="{% url  'users:mypage' post.writer.id%}" >{{post.writer}}</a>
+                </div>
 
             </div>
         </div>
