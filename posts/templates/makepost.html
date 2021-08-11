@@ -8,7 +8,7 @@
 
     <form action="{%url 'posts:create'%}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    <p>카테고리:<label for="category"></label>
+    <p><label for="category"></label>
         <select name="category" id="category">
             <option value="식자재">식자재</option>
             <option value="생필품">생필품</option>
