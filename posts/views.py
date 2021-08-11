@@ -197,6 +197,8 @@ def delete(request,id):
 def result(request):
     query=request.GET['query']
     if query:
-            posts =Post.objects.filter(title__contains=query)
+        posts = Post.objects.filter(title__contains=query)
+    else:
+        posts = Post.objects.all()
     return render(request, 'result.html', {'posts':posts})
 
