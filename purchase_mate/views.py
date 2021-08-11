@@ -5,8 +5,9 @@ from posts.models import Post
 
 
 def index(request):
-    shop_follow = []
-    shop_all = []
+    shop_follow = [] # 팔로잉 유저의 게시글 목록
+    shop_all = [] # 최근 게시글 목록
+    
     if request.user.is_authenticated:
         user = request.user
         for friend in user.profile.followings.all():
@@ -15,18 +16,11 @@ def index(request):
     shop_all += list(Post.objects.all())
     shop_all.sort(reverse=True, key=lambda x: x.pub_date)
 
-    c=0
-  
-    for i in shop_follow:
-        c+=1
-    if c==0:
-        c=True
-    else:
-        c=False
+    c = len(shop_follow)==0
 
-   
-    return render(
-        request,
-        "index.html",
-        {"shop_follow": shop_follow, "shop_all": shop_all,"c":c},
-    )
+    context = {
+        "shop_follow": shop_follow,
+        "shop_all": shop_all,
+        "c":c
+    }
+    return render(request, "index.html", context)
