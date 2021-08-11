@@ -9,3 +9,11 @@ class ComPost(models.Model):  # 일반 커뮤니티용 모델
     pub_date = models.DateTimeField()
     body = models.TextField()
     image = models.ImageField(upload_to="post/", null=True, blank=True)
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    writer = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(ComPost, on_delete=models.CASCADE, related_name="comments")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
