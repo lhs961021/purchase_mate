@@ -4,7 +4,8 @@
 <div style= "margin:0px 200px; margin-top:80px; font-family: 'Noto Sans KR', sans-serif;">
 
 {%for post in posts%}
-    <h1>{{post.title}}</h1>
+    <a href="{%url 'community:detail' post.id%}"><h1>{{post.title}}</h1></a>
+    <br><hr>    
 {%endfor%}
 </div>
 <br>
