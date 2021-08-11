@@ -21,12 +21,16 @@ def map(request,id):
     # else:
     
     form = SearchForm()
-    
-    #내 개인정보 주소
-    address = request.user.profile.address
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
+    if request.user.is_authenticated: # 로그인 한 경우
+        #내 개인정보 주소
+        address = request.user.profile.address
+        location = geocoder.osm(address)
+        lat = location.lat
+        lng = location.lng
+    else:
+        lat = 0
+        lng = 0
+
     #게시물에 올린 픽업 장소 주소
     spot = get_object_or_404(Post, pk=id)
     spot = spot.spot
@@ -129,12 +133,16 @@ def makepost(request):
 def detail(request,id):
     post = get_object_or_404(Post, pk=id)
     post_writer=Profile.objects.get(user=post.writer)
-
-     #내 개인정보 주소
-    address = request.user.profile.address
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
+    
+    if request.user.is_authenticated: # 로그인 한 경우
+        #내 개인정보 주소
+        address = request.user.profile.address
+        location = geocoder.osm(address)
+        lat = location.lat
+        lng = location.lng
+    else:
+        lat = 0
+        lng = 0
 
     #게시물에 올린 픽업 장소 주소
     spot = post.spot
