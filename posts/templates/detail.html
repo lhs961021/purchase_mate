@@ -23,11 +23,12 @@
         공동구매 픽업 주소 : {{post.spot}} <br>
     </div>
     <br>
+    {%if request.user.is_authenticated%}
     <div>내 집주소 - 공동구매 픽업 장소 사이 거리 : {{distance}}km </div>
     <br>
     
     <a href="{% url 'posts:map' post.id %}" class="btn btn-dark">지도보기</a>
-
+    {% endif %}
     <br><br><br>
     {% if user == post.writer %}
     <a href="{%url 'posts:edit' post.id%}" class="btn btn-dark">수정하기</a>

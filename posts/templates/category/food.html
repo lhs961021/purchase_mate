@@ -11,13 +11,12 @@
     <hr>
     <div style="display:flex; margin: 10px 0px; height: 20vh;">
         <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh; border:solid green 3px; border-radius:10%; background-color:#aad4b3;">
-            <!-- {%if post.image%}
+            {%if post.image%}
             <img src="{{ post.image.url }}" style="object-fit: cover; width:100%; height: 100%;" alt="사진">
             {%else%}
-            <img src="../../static/images/main.png"
-                style="width:15vh; height:15vh; position:relative; top:2.5vh; left:2.5vh;">
-            {%endif%} -->
-            <img src="{%static 'images/vegetable_icon.svg'%}" width="100%" ; height="100%" alt="food">
+            <img src="{%static 'img/default/vegetable_icon.svg'%}" width="100%" ; height="100%" alt="food">
+            {%endif%}
+            
         </div>
         <div style="display:flex; flex-direction: column; justify-content: space-around;">
             <a href="{%url 'posts:detail' post.id%}" style="text-decoration:none; ">
