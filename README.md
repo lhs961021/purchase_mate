@@ -1,4 +1,4 @@
-# 2021 멋쟁이사자처럼 해커톤 
+# :lion:2021 멋쟁이사자처럼 해커톤 
  
 ## 1. 참여 과제
 
@@ -11,11 +11,11 @@
 
 본 해커톤 프로젝트에 참여하는 Purchase-mate 팀의 팀원은 다음과 같다. (가나다 순으로 나열)
 
-- 김시윤(https://github.com/sharon1638)
-- 박상준(팀장)(https://github.com/tkdwns414) 
-- 이태검(https://github.com/LeeTaeGeom)
-- 이형석(https://github.com/lhs961021)
-- 임도연(https://github.com/dddooo9)
+- [김시윤](https://github.com/sharon1638)
+- [박상준](https://github.com/tkdwns414) (팀장)
+- [이태검](https://github.com/LeeTaeGeom)
+- [이형석](https://github.com/lhs961021)
+- [임도연](https://github.com/dddooo9)
 
 ## 2. 프로그래밍 언어
 
