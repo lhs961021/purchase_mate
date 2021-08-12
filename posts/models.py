@@ -20,7 +20,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to="blog/", blank=True, null=True)
     chat = models.CharField(max_length=200, null=True)
     spot = models.CharField(max_length=200, null=True)
-
+    distance = models.FloatField(default=0)
     def __str__(self):
         return self.title
 

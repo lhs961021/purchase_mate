@@ -43,4 +43,7 @@ $ python manage.py runserver
 
 - Git 관련 환경변수 파일
 
+## 5. 동국대 이메일로 로그인 하는 경우
+
+https://wave1994.tistory.com/100 참고
 
