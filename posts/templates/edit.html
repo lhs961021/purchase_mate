@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 
+<section style="margin:0px 200px; margin-top:80px;">
 <h1> 게시물 수정하기 </h1><br>
-
 <form action="{%url 'posts:update' post.id%}" method="post">
     {% csrf_token %}
     <p><label for="category">카테고리 : </label>
@@ -23,5 +23,6 @@
     <p> 공동구매 픽업 주소 : <input type="text" name="spot" value="{{post.spot}}" required></p>
     <button type="submit">수정하기</button>
 </form>
+</section>
 <br>
 {% endblock %}

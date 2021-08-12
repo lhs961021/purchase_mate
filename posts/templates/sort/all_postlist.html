@@ -24,7 +24,7 @@
 
         {%for post in post%}
         <hr>
-        <div style="display:flex; margin: 10px 0px; height: 20vh;">
+        <div style="display:flex; margin: 10px 0px; height: 22vh;">
             <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh; border-radius:10%;">
                 <!-- {%if post.image%}
             <img src="{{ post.image.url }}" style="object-fit: cover; width:100%; height: 100%;" alt="사진">
@@ -56,10 +56,11 @@
                     <h3 style="color:black; font-family: 'Nanum Gothic Coding', sans-serif;">{{post.title}}</h3>
                 </a>
                 <div style=" display:block;">
+                인당가격 : {{post.price_per_person}} 원<br>
                 모집인원 : {{post.people}} 명<br>
                 공구 마감일 : {{post.deadline}}<br>
                 작성자 : <a style="text-decoration:none; color:black; font-family: 'Nanum Gothic Coding', sans-serif;" href="{% url  'users:mypage' post.writer.id%}" >{{post.writer}}</a>
-                <br>픽업 거리 : {{post.distance}}km
+                <br>픽업 거리 : {{post.distance}} km
                 
             </div>
 
