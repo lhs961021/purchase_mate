@@ -19,7 +19,7 @@ def map(request, id):
     #     form = SearchForm(request.POST)
     #     if form.is_valid():
     #         form.save()
-    #         return redirect('/map/') #검색부분
+    #         return redirect('/map/') #검색부분 필요할수도 있으니까 일단 주석
     # else:
 
     form = SearchForm()
@@ -55,15 +55,16 @@ def map(request, id):
     # Get HTML Representation of Map Object
     m = m._repr_html_()
 
-    radius = 6371  # km
 
-    dlat = math.radians(spot_lat - lat)
-    dlon = math.radians(spot_lng - lng)
-    a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(
-        math.radians(lat)
-    ) * math.cos(math.radians(spot_lat)) * math.sin(dlon / 2) * math.sin(dlon / 2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    d = radius * c
+    # radius = 6371  # km
+ 
+    # dlat = math.radians(spot_lat-lat)
+    # dlon = math.radians(spot_lng-lng)
+    # a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+    #     * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    # d = radius * c
+    d=get_object_or_404(Post, pk=id).distance
 
     context = {
         "m": m,
@@ -121,7 +122,8 @@ def recent_postlist(request):
 
 
 def deadline_postlist(request):
-    post = Post.objects.order_by("deadline")
+
+    post = Post.objects.order_by("-deadline")
     return render(request, "sort/deadline_postlist.html", {"post": post})
 
 
@@ -131,7 +133,6 @@ def distance_postlist(request):
         return render(request, "sort/distance_postlist.html", {"post": post})
     else:
         return redirect("account_login")
-
 
 def price_postlist(request):
     post = list(Post.objects.all())
@@ -146,55 +147,49 @@ def makepost(request):
 
 def detail(request, id):
     post = get_object_or_404(Post, pk=id)
-    post_writer = Profile.objects.get(user=post.writer)
 
-    if request.user.is_authenticated:  # 로그인 한 경우
-        # 내 개인정보 주소
-        address = request.user.profile.address
-        location = geocoder.osm(address)
-        lat = location.lat
-        lng = location.lng
-    else:
-        lat = 0
-        lng = 0
-
-    # 게시물에 올린 픽업 장소 주소
-    spot = post.spot
-    spot_location = geocoder.osm(spot)
-    spot_lat = spot_location.lat
-    spot_lng = spot_location.lng
-
-    radius = 6371  # km
-    dlat = math.radians(spot_lat - lat)
-    dlon = math.radians(spot_lng - lng)
-    a = math.sin(dlat / 2) * math.sin(dlat / 2) + math.cos(
-        math.radians(lat)
-    ) * math.cos(math.radians(spot_lat)) * math.sin(dlon / 2) * math.sin(dlon / 2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    d = radius * c
-
-    return render(
-        request,
-        "detail.html",
-        {"post": post, "post_writer": post_writer, "distance": d},
-    )
-
+    post_writer=Profile.objects.get(user=post.writer)
+    
+    return render(request,'detail.html',{'post':post,'post_writer':post_writer})
 
 def create(request):
     makepost_post = Post()
-    makepost_post.title = request.POST["title"]
-    makepost_post.writer = request.user
-    makepost_post.pub_date = timezone.now()
-    makepost_post.deadline = request.POST["deadline"]
-    makepost_post.quantity = request.POST["quantity"]
-    makepost_post.price = request.POST["price"]
-    makepost_post.people = request.POST["people"]
-    makepost_post.category = request.POST["category"]
-    makepost_post.image = request.FILES.get("image")
-    makepost_post.chat = request.POST["chat"]
-    makepost_post.spot = request.POST["spot"]
+    makepost_post.title = request.POST['title']
+    makepost_post.writer=request.user
+    makepost_post.pub_date=timezone.now()
+    makepost_post.deadline=request.POST['deadline']
+    makepost_post.quantity=request.POST['quantity']
+    makepost_post.price=request.POST['price']
+    makepost_post.people=request.POST['people']
+    makepost_post.category=request.POST['category']
+    makepost_post.image=request.FILES.get('image')
+    makepost_post.chat=request.POST['chat']
+    makepost_post.spot=request.POST['spot']
+    
+    address = request.user.profile.address
+    location = geocoder.osm(address)
+    lat = location.lat
+    lng = location.lng
+   
+    #게시물에 올린 픽업 장소 주소
+    spot = makepost_post.spot
+    spot_location = geocoder.osm(spot)
+    spot_lat = spot_location.lat
+    spot_lng = spot_location.lng
+    
+    radius = 6371  # km
+    dlat = math.radians(spot_lat-lat)
+    dlon = math.radians(spot_lng-lng)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = radius * c
+
+    makepost_post.distance=d
     makepost_post.save()
-    return redirect("posts:detail", makepost_post.id)
+
+    
+    return redirect ('posts:detail',makepost_post.id)
 
 
 def edit(request, id):
@@ -207,14 +202,39 @@ def update(request, id):
     update_post.title = request.POST["title"]
     update_post.writer = request.user
     update_post.pub_date = timezone.now()
-    update_post.deadline = request.POST["deadline"]
-    update_post.quantity = request.POST["quantity"]
-    update_post.price = request.POST["price"]
-    update_post.people = request.POST["people"]
-    update_post.category = request.POST["category"]
-    update_post.image = request.POST["image"]
-    update_post.chat = request.POST["chat"]
-    update_post.spot = request.POST["spot"]
+
+    update_post.deadline=request.POST['deadline']
+    update_post.quantity=request.POST['quantity']
+    update_post.price=request.POST['price']
+    update_post.people=request.POST['people']
+    update_post.category=request.POST['category']
+    update_post.image=request.POST['image']
+    update_post.chat=request.POST['chat']
+    update_post.spot=request.POST['spot']
+
+    address = request.user.profile.address
+    location = geocoder.osm(address)
+    lat = location.lat
+    lng = location.lng
+   
+    #게시물에 올린 픽업 장소 주소
+    spot = update_post.spot
+    spot_location = geocoder.osm(spot)
+    spot_lat = spot_location.lat
+    spot_lng = spot_location.lng
+    
+    radius = 6371  # km
+    dlat = math.radians(spot_lat-lat)
+    dlon = math.radians(spot_lng-lng)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = radius * c
+
+    update_post.distance=d
+   
+
+
     update_post.save()
     return redirect("posts:detail", update_post.id)
 
