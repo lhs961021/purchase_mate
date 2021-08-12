@@ -55,15 +55,15 @@ def map(request,id):
     m = m._repr_html_()
     
 
-    radius = 6371  # km
+    # radius = 6371  # km
  
-    dlat = math.radians(spot_lat-lat)
-    dlon = math.radians(spot_lng-lng)
-    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    d = radius * c
-
+    # dlat = math.radians(spot_lat-lat)
+    # dlon = math.radians(spot_lng-lng)
+    # a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+    #     * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    # d = radius * c
+    d=get_object_or_404(Post, pk=id).distance
     context = {
         'm' : m,
         'form' : form,
