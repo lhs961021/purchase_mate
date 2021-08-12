@@ -4,8 +4,11 @@ from django.utils import timezone
 
 
 def community(request):
-    posts = ComPost.objects.all()
-    return render(request, "community/community.html", {"posts": posts})
+    if request.user.is_authenticated:
+        posts = ComPost.objects.all()
+        return render(request, "community/community.html", {"posts": posts})
+    else:
+        return redirect("account_login")
 
 
 def detail(request, id):
