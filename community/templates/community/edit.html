@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div style= "margin:0px 200px; margin-top:80px; font-family: 'Noto Sans KR', sans-serif;">
+<div style="margin:0px 200px; margin-top:80px; font-family: 'Noto Sans KR', sans-serif;">
+	<section>
+		<form action="{%url 'community:update' post.id%}" method="post" enctype="multipart/form-data">
+			{%csrf_token%}
+			<p>제목 : <input type="text" name="title" value="{{post.title}}" required></p>
+			<p>사진 : <input type="file" name="image"></p>
+			<p>내용 :<textarea style="width: 100%;" type="text" name="body" id="" cols="50" rows="10"
+				required>{{post.body}}</textarea>
+			<button type="submit">제출</button>
+		</form>
+	</section>
 
-<section>
-	<form action="{%url 'community:update' post.id%}" method="post" enctype="multipart/form-data">
-		{%csrf_token%}
-		<p>제목 : <input type="text" name="title" value="{{post.title}}" required></p>
-		<p>사진 : <input type="file" name="image"></p>
-		<p>내용 : <textarea type="text" name="body" id="" cols="90" rows="10" required>{{post.body}}</textarea></p>
-		<button type="submit">제출</button>
-	</form>	
-</section>
-<div>
+</div>
 <br>
 {% endblock %}

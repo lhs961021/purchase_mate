@@ -123,13 +123,13 @@ def recent_postlist(request):
 
 def deadline_postlist(request):
 
-    post = Post.objects.order_by("-deadline")
+    post = Post.objects.order_by("deadline")
     return render(request, "sort/deadline_postlist.html", {"post": post})
 
 
 def distance_postlist(request):
     if request.user.is_authenticated:
-        post = Post.objects.all("spot")
+        post = Post.objects.order_by("distance")
         return render(request, "sort/distance_postlist.html", {"post": post})
     else:
         return redirect("account_login")

@@ -9,7 +9,7 @@
     {%for post in post%}
     <hr>
     <div style="display:flex; margin: 10px 0px; height: 20vh;">
-        <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh; border:solid #06C2F4 3px; border-radius:10%; background-color:#86cdd7;">
+        <div style="overflow:hidden;margin:0px 30px;width:20vh; height:20vh;  border-radius:10%; background-color:lightgray;">
             {%if post.image%}
             <img src="{{ post.image.url }}" style="object-fit: cover; width:100%; height: 100%;" alt="사진">
             {%else%}
@@ -26,7 +26,7 @@
         </div>
     </div>
     {%endfor%}
-
+ <br>
 </section>
 
 {% endblock %}
