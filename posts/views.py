@@ -165,7 +165,7 @@ def create(request):
     makepost_post.image=request.FILES.get('image')
     makepost_post.chat=request.POST['chat']
     makepost_post.spot=request.POST['spot']
-    
+    makepost_post.price_per_person=int(makepost_post.price)/int(makepost_post.people)
     address = request.user.profile.address
     location = geocoder.osm(address)
     lat = location.lat
@@ -202,7 +202,6 @@ def update(request, id):
     update_post.title = request.POST["title"]
     update_post.writer = request.user
     update_post.pub_date = timezone.now()
-
     update_post.deadline=request.POST['deadline']
     update_post.quantity=request.POST['quantity']
     update_post.price=request.POST['price']
@@ -211,6 +210,7 @@ def update(request, id):
     update_post.image=request.POST['image']
     update_post.chat=request.POST['chat']
     update_post.spot=request.POST['spot']
+    update_post.price_per_person=int(update_post.price)/int(update_post.people)
 
     address = request.user.profile.address
     location = geocoder.osm(address)
