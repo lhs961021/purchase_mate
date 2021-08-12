@@ -3,7 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from community.models import ComPost
 from posts.models import Post
 from django.contrib.auth.models import User
-
+import geocoder
+import math
 
 def mypage(request, id):
     user = get_object_or_404(Profile, pk=id)
@@ -23,6 +24,30 @@ def update(request):  # 개인만 쓸 함수
     update_profile.address = request.POST["address"]
     update_profile.save()
 
+    posts=Post.objects.all()
+
+    for i in posts:
+        # print(i.distance)
+        address = update_profile.address
+        location = geocoder.osm(address)
+        lat = location.lat
+        lng = location.lng
+    
+        #게시물에 올린 픽업 장소 주소
+        spot = i.spot
+        spot_location = geocoder.osm(spot)
+        spot_lat = spot_location.lat
+        spot_lng = spot_location.lng
+        
+        radius = 6371  # km
+        dlat = math.radians(spot_lat-lat)
+        dlon = math.radians(spot_lng-lng)
+        a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+            * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        d = radius * c
+        i.distance=d
+        i.save()
     return redirect("users:introduce")
 
 
