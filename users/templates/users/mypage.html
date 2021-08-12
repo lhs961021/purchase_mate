@@ -11,13 +11,15 @@
                 <br>
                 <br>
                 <div style="text-align: right;">
-                    {% if request.user != user.user %}<!--다른 사람의 프로필에 들어온 경우에만 팔로우/언팔로우 버튼이보임-->
-                        {% if request.user.profile in user.followers.all %}
-                            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-outline-info">언팔로우</button></a>
-                        {% else %}
-                            <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-info">팔로우</button></a>
+                    {%if request.user.is_authenticated%}
+                        {% if request.user != user.user %}<!--다른 사람의 프로필에 들어온 경우에만 팔로우/언팔로우 버튼이보임-->
+                            {% if request.user.profile in user.followers.all %}
+                                <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-outline-info">언팔로우</button></a>
+                            {% else %}
+                                <a href="{%url 'users:follow' user.id %}"><button type="button" class="btn btn-info">팔로우</button></a>
+                            {% endif %}
                         {% endif %}
-                    {% endif %}
+                    {%endif%}
                 </div>
             </div>
             <div style="padding: 30px; border: 2px inset black; width:100%; text-align:center; word-break:break-all;">

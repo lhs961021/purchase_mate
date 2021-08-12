@@ -10,19 +10,21 @@ from .models import Search
 from .forms import SearchForm
 
 import math
+
 # Create your views here.
 
-def map(request,id):
+
+def map(request, id):
     # if request.method == 'POST':
     #     form = SearchForm(request.POST)
     #     if form.is_valid():
     #         form.save()
     #         return redirect('/map/') #검색부분 필요할수도 있으니까 일단 주석
     # else:
-    
+
     form = SearchForm()
-    if request.user.is_authenticated: # 로그인 한 경우
-        #내 개인정보 주소
+    if request.user.is_authenticated:  # 로그인 한 경우
+        # 내 개인정보 주소
         address = request.user.profile.address
         location = geocoder.osm(address)
         lat = location.lat
@@ -31,29 +33,28 @@ def map(request,id):
         lat = 0
         lng = 0
 
-    #게시물에 올린 픽업 장소 주소
+    # 게시물에 올린 픽업 장소 주소
     spot = get_object_or_404(Post, pk=id)
     spot = spot.spot
     spot_location = geocoder.osm(spot)
     spot_lat = spot_location.lat
     spot_lng = spot_location.lng
-    
+
     country = location.country
     if lat == None or lng == None:
         address.delete()
-        return HttpResponse('잘못된 주소입니다! 새로고침을 눌러 다시 검색해주세요!')
-
+        return HttpResponse("잘못된 주소입니다! 새로고침을 눌러 다시 검색해주세요!")
 
     # Map Object 만들기
     m = folium.Map(location=[lat, lng], zoom_start=15)
 
-    folium.Marker([lat, lng], tooltip='Click for more', 
-                    popup=country).add_to(m)
-    folium.Marker([spot_lat, spot_lng], tooltip='Click for more', 
-                    popup=country).add_to(m)
+    folium.Marker([lat, lng], tooltip="Click for more", popup=country).add_to(m)
+    folium.Marker([spot_lat, spot_lng], tooltip="Click for more", popup=country).add_to(
+        m
+    )
     # Get HTML Representation of Map Object
     m = m._repr_html_()
-    
+
 
     # radius = 6371  # km
  
@@ -64,74 +65,89 @@ def map(request,id):
     # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
     # d = radius * c
     d=get_object_or_404(Post, pk=id).distance
+
     context = {
-        'm' : m,
-        'form' : form,
-        "d": d, 
+        "m": m,
+        "form": form,
+        "d": d,
     }
 
     return render(request, "map/map.html", context)
 
 
-
 # Create your views here.
 def showmain(request):
-    posts=Post.objects.all()
-    return render(request, 'purchase_mate/index.html',{'posts':posts})
+    posts = Post.objects.all()
+    return render(request, "purchase_mate/index.html", {"posts": posts})
+
 
 def shop(request):
-    return render(request, 'posts/shop.html')
+    return render(request, "posts/shop.html")
+
 
 def shop_detail(request):
-    return render(request, 'posts/shop_detail.html')
+    return render(request, "posts/shop_detail.html")
 
 
-# 카테고리 부분 
+# 카테고리 부분
 def food(request):
-    post = Post.objects.filter(category='식자재')
-    return render(request,'category/food.html',{'post':post})
+    post = Post.objects.filter(category="식자재")
+    return render(request, "category/food.html", {"post": post})
 
-def daily_necessity(request):   
-    post = Post.objects.filter(category='생필품')
-    return render(request,'category/daily_necessity.html',{'post':post})
 
-def ott(request):  
-    post = Post.objects.filter(category='OTT 서비스')
-    return render(request,'category/ott.html',{'post':post})
+def daily_necessity(request):
+    post = Post.objects.filter(category="생필품")
+    return render(request, "category/daily_necessity.html", {"post": post})
 
-def etc(request):  
-    post = Post.objects.filter(category='기타')
-    return render(request,'category/etc.html',{'post':post})
+
+def ott(request):
+    post = Post.objects.filter(category="OTT 서비스")
+    return render(request, "category/ott.html", {"post": post})
+
+
+def etc(request):
+    post = Post.objects.filter(category="기타")
+    return render(request, "category/etc.html", {"post": post})
 
 
 # 정렬 부분
 def all_postlist(request):
-    post=Post.objects.all()
-    return render(request,'sort/all_postlist.html',{'post':post})
+    post = Post.objects.all()
+    return render(request, "sort/all_postlist.html", {"post": post})
+
 
 def recent_postlist(request):
-    post=Post.objects.order_by('-pub_date')
-    return render(request,'sort/recent_postlist.html',{'post':post})
+    post = Post.objects.order_by("-pub_date")
+    return render(request, "sort/recent_postlist.html", {"post": post})
+
 
 def deadline_postlist(request):
-    post=Post.objects.order_by('-deadline')
-    return render(request,'sort/deadline_postlist.html',{'post':post})
+
+    post = Post.objects.order_by("-deadline")
+    return render(request, "sort/deadline_postlist.html", {"post": post})
+
 
 def distance_postlist(request):
-    post=Post.objects.order_by('distance')
-    return render(request,'sort/distance_postlist.html',{'post':post})
+    if request.user.is_authenticated:
+        post = Post.objects.all("spot")
+        return render(request, "sort/distance_postlist.html", {"post": post})
+    else:
+        return redirect("account_login")
 
 def price_postlist(request):
-    post=Post.objects.order_by('price')
-    return render(request,'sort/price_postlist.html',{'post':post})
+    post = list(Post.objects.all())
+    post.sort(key=lambda x: x.price / x.people)
+    return render(request, "sort/price_postlist.html", {"post": post})
 
 
-#CRUD 부분
+# CRUD 부분
 def makepost(request):
-    return render(request, 'makepost.html')
+    return render(request, "makepost.html")
 
-def detail(request,id):
+
+def detail(request, id):
     post = get_object_or_404(Post, pk=id)
+
     post_writer=Profile.objects.get(user=post.writer)
     
     return render(request,'detail.html',{'post':post,'post_writer':post_writer})
@@ -175,15 +191,18 @@ def create(request):
     
     return redirect ('posts:detail',makepost_post.id)
 
+
 def edit(request, id):
     edit_post = Post.objects.get(id=id)
-    return render(request, 'edit.html',{'post':edit_post})
+    return render(request, "edit.html", {"post": edit_post})
+
 
 def update(request, id):
-    update_post= Post.objects.get(id=id)
-    update_post.title = request.POST['title']
-    update_post.writer=request.user
+    update_post = Post.objects.get(id=id)
+    update_post.title = request.POST["title"]
+    update_post.writer = request.user
     update_post.pub_date = timezone.now()
+
     update_post.deadline=request.POST['deadline']
     update_post.quantity=request.POST['quantity']
     update_post.price=request.POST['price']
@@ -215,19 +234,21 @@ def update(request, id):
     update_post.distance=d
    
 
-    update_post.save()
-    return redirect('posts:detail',update_post.id)
 
-def delete(request,id):
-    delete_post = Post.objects.get(id = id)
+    update_post.save()
+    return redirect("posts:detail", update_post.id)
+
+
+def delete(request, id):
+    delete_post = Post.objects.get(id=id)
     delete_post.delete()
-    return redirect('posts:all_postlist')
+    return redirect("posts:all_postlist")
+
 
 def result(request):
-    query=request.GET['query']
+    query = request.GET["query"]
     if query:
         posts = Post.objects.filter(title__contains=query)
     else:
         posts = Post.objects.all()
-    return render(request, 'result.html', {'posts':posts})
-
+    return render(request, "result.html", {"posts": posts})

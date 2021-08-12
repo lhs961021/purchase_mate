@@ -16,13 +16,13 @@
             <option value="기타">기타</option>
         </select></p><br>
     <p> 사진: <input type="file" name= "image"></p>
-    <p> 상품명 : <input type="text" name="title"></p>
-    <p> 마감기한 : <input type="date" name="deadline"></p>
-    <p> 수량 : <input type="number" name="quantity" min="1">개</p>
-    <p> 총가격 : <input type="number" name="price" min="0">원</p>
-    <p> 목표인원 : <input type="number" name="people" min="1"></p>
-    <p> 오픈채팅방 주소 : <input type="text" name="chat"></p>
-    <p> 공동구매 픽업 주소 : <input type="text" name="spot"></p>
+    <p> 상품명 : <input type="text" name="title" required></p>
+    <p> 마감기한 : <input type="date" name="deadline" required></p>
+    <p> 수량 : <input type="number" name="quantity" min="1" required>개</p>
+    <p> 총가격 : <input type="number" name="price" min="0" required>원</p>
+    <p> 목표인원 : <input type="number" name="people" min="1" required></p>
+    <p> 오픈채팅방 주소 : <input type="text" name="chat" required></p>
+    <p> 공동구매 픽업 주소 : <input type="text" name="spot" required></p>
     <br><button type="submit">제출</button>
 </form>
 </section>
