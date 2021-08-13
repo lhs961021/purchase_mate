@@ -8,8 +8,9 @@ import folium
 import geocoder
 from .models import Search
 from .forms import SearchForm
-
+from django.contrib.auth.models import User
 import math
+from operator import itemgetter
 
 # Create your views here.
 
@@ -56,20 +57,20 @@ def map(request, id):
     m = m._repr_html_()
 
 
-    # radius = 6371  # km
+    radius = 6371  # km
  
-    # dlat = math.radians(spot_lat-lat)
-    # dlon = math.radians(spot_lng-lng)
-    # a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-    #     * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-    # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    # d = radius * c
-    d=get_object_or_404(Post, pk=id).distance
+    dlat = math.radians(spot_lat-lat)
+    dlon = math.radians(spot_lng-lng)
+    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    d = radius * c
+    
 
     context = {
         "m": m,
         "form": form,
-        "d": d,
+         "d": d,
     }
 
     return render(request, "map/map.html", context)
@@ -112,8 +113,41 @@ def etc(request):
 
 # 정렬 부분
 def all_postlist(request):
-    post = Post.objects.all()
-    return render(request, "sort/all_postlist.html", {"post": post})
+    if request.user.is_authenticated:
+        post = Post.objects.all()
+        postd=[]
+        
+        for i in post:
+            lt=[]
+            address = request.user.profile.address
+            location = geocoder.osm(address)
+            lat = location.lat
+            lng = location.lng
+        
+            #게시물에 올린 픽업 장소 주소
+            spot = i.spot
+            spot_location = geocoder.osm(spot)
+            spot_lat = spot_location.lat
+            spot_lng = spot_location.lng
+            
+            radius = 6371  # km
+            dlat = math.radians(spot_lat-lat)
+            dlon = math.radians(spot_lng-lng)
+            a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+                * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+            d = radius * c
+            lt.append(i)
+            lt.append(d)
+            postd.append(lt)
+            
+            
+        # return HttpResponse("hi")
+        # for j in postd:
+        #     print(j)
+        return render(request, "sort/all_postlist.html", {"post": postd})
+    else:
+        return redirect("account_login")
 
 
 def recent_postlist(request):
@@ -128,9 +162,39 @@ def deadline_postlist(request):
 
 
 def distance_postlist(request):
+
     if request.user.is_authenticated:
-        post = Post.objects.order_by("distance")
-        return render(request, "sort/distance_postlist.html", {"post": post})
+        post = Post.objects.all()
+        dislt=[]
+        for i in post:
+            lt=[]
+            address = request.user.profile.address
+            location = geocoder.osm(address)
+            lat = location.lat
+            lng = location.lng
+        
+            #게시물에 올린 픽업 장소 주소
+            spot = i.spot
+            spot_location = geocoder.osm(spot)
+            spot_lat = spot_location.lat
+            spot_lng = spot_location.lng
+            
+            radius = 6371  # km
+            dlat = math.radians(spot_lat-lat)
+            dlon = math.radians(spot_lng-lng)
+            a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+                * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+            d = radius * c
+            lt.append(i)
+            lt.append(d)
+            dislt.append(lt)
+
+            
+       
+        dislt.sort(key=itemgetter(1))
+        
+        return render(request, "sort/distance_postlist.html", {"post": dislt})
     else:
         return redirect("account_login")
 
@@ -146,11 +210,35 @@ def makepost(request):
 
 
 def detail(request, id):
-    post = get_object_or_404(Post, pk=id)
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=id)
 
-    post_writer=Profile.objects.get(user=post.writer)
+        post_writer=Profile.objects.get(user=post.writer)
+
+        address = request.user.profile.address
+        location = geocoder.osm(address)
+        lat = location.lat
+        lng = location.lng
     
-    return render(request,'detail.html',{'post':post,'post_writer':post_writer})
+        #게시물에 올린 픽업 장소 주소
+        spot = post.spot
+        spot_location = geocoder.osm(spot)
+        spot_lat = spot_location.lat
+        spot_lng = spot_location.lng
+        
+        radius = 6371  # km
+        dlat = math.radians(spot_lat-lat)
+        dlon = math.radians(spot_lng-lng)
+        a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+            * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        d = radius * c
+
+    
+    
+        return render(request,'detail.html',{'post':post,'post_writer':post_writer,'d':d})
+    else:
+        return redirect("account_login")
 
 def create(request):
     makepost_post = Post()
@@ -166,26 +254,27 @@ def create(request):
     makepost_post.chat=request.POST['chat']
     makepost_post.spot=request.POST['spot']
     makepost_post.price_per_person=int(makepost_post.price)/int(makepost_post.people)
-    address = request.user.profile.address
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
-   
-    #게시물에 올린 픽업 장소 주소
-    spot = makepost_post.spot
-    spot_location = geocoder.osm(spot)
-    spot_lat = spot_location.lat
-    spot_lng = spot_location.lng
     
-    radius = 6371  # km
-    dlat = math.radians(spot_lat-lat)
-    dlon = math.radians(spot_lng-lng)
-    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    d = radius * c
+    # address = request.user.profile.address
+    # location = geocoder.osm(address)
+    # lat = location.lat
+    # lng = location.lng
+   
+    # #게시물에 올린 픽업 장소 주소
+    # spot = makepost_post.spot
+    # spot_location = geocoder.osm(spot)
+    # spot_lat = spot_location.lat
+    # spot_lng = spot_location.lng
+    
+    # radius = 6371  # km
+    # dlat = math.radians(spot_lat-lat)
+    # dlon = math.radians(spot_lng-lng)
+    # a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+    #     * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    # d = radius * c
 
-    makepost_post.distance=d
+    # # makepost_post.distance=d
     makepost_post.save()
 
     
@@ -202,39 +291,39 @@ def update(request, id):
     update_post.title = request.POST["title"]
     update_post.writer = request.user
     update_post.pub_date = timezone.now()
-    update_post.deadline=request.POST['deadline']
+    if request.POST['deadline']:
+        update_post.deadline=request.POST['deadline']
     update_post.quantity=request.POST['quantity']
     update_post.price=request.POST['price']
     update_post.people=request.POST['people']
     update_post.category=request.POST['category']
-    update_post.image=request.POST['image']
+    if request.FILES.get('image'):
+        update_post.image=request.FILES.get('image')
     update_post.chat=request.POST['chat']
     update_post.spot=request.POST['spot']
     update_post.price_per_person=int(update_post.price)/int(update_post.people)
 
-    address = request.user.profile.address
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
+    # address = request.user.profile.address
+    # location = geocoder.osm(address)
+    # lat = location.lat
+    # lng = location.lng
    
-    #게시물에 올린 픽업 장소 주소
-    spot = update_post.spot
-    spot_location = geocoder.osm(spot)
-    spot_lat = spot_location.lat
-    spot_lng = spot_location.lng
+    # #게시물에 올린 픽업 장소 주소
+    # spot = update_post.spot
+    # spot_location = geocoder.osm(spot)
+    # spot_lat = spot_location.lat
+    # spot_lng = spot_location.lng
     
-    radius = 6371  # km
-    dlat = math.radians(spot_lat-lat)
-    dlon = math.radians(spot_lng-lng)
-    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    d = radius * c
+    # radius = 6371  # km
+    # dlat = math.radians(spot_lat-lat)
+    # dlon = math.radians(spot_lng-lng)
+    # a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+    #     * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+    # c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+    # d = radius * c
 
-    update_post.distance=d
+    # update_post.distance=d
    
-
-
     update_post.save()
     return redirect("posts:detail", update_post.id)
 

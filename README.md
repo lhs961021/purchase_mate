@@ -39,7 +39,7 @@
 
 본 애플리케이션의 소스코드 내에서 활용한 모든 외부 라이브러리는 requirements.txt에 해당 라이브러리 리스트를 저장하여 팀원들에게 공유하여야 한다.
 ```
-$ pip freeze > requirement.txt
+$ pip freeze > requirements.txt
 ```
 requirements.txt에 저장된 외부 라이브러리를 다운로드 받는 명령어는 다음과 같다.
 ```
@@ -71,3 +71,5 @@ https://wave1994.tistory.com/100 참고
 ## 6. 배포
 
 서버 배포는 aws EC2의 Ubuntu Server 18.04 LTS (HVM), SSD Volume Type - 64bit, t2.micro(프리티어) 인스턴스를 이용한다. 
+
+서버 주소 : 3.138.192.5

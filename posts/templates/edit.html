@@ -4,7 +4,7 @@
 
 <section style="margin:0px 200px; margin-top:80px;">
 <h1> 게시물 수정하기 </h1><br>
-<form action="{%url 'posts:update' post.id%}" method="post">
+<form action="{%url 'posts:update' post.id%}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p><label for="category">카테고리 : </label>
         <select name="category" id="category">
@@ -13,9 +13,9 @@
             <option value="OTT 서비스">OTT 서비스</option>
             <option value="기타">기타</option>
     </select></p>
-    <p> 사진: <input type="file" name= "image" value="{{post.image}}"></p>
+    <p> 사진: <input type="file" name= "image" value="{{post.image}}">{{post.image}}</p>
     <p> 상품명 : <input type="text" name="title" value ="{{post.title}}" required></p>
-    <p> 마감기한 : <input type="date" name="deadline" value="{{post.deadline}}" required></p>
+    <p> 마감기한 : <input type="date" name="deadline" value="{{post.deadline}}">{{post.deadline}}</p>
     <p> 수량 : <input type="number" name="quantity" min="1" value="{{post.quantity}}" required>개</p>
     <p> 총가격 : <input type="number" name="price" min="0" value="{{post.price}}" required>원</p>
     <p> 목표인원 : <input type="number" name="people" min="1" value="{{post.people}}" required>명</p>

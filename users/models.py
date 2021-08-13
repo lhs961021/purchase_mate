@@ -12,7 +12,7 @@ class Profile(models.Model):
     followings = models.ManyToManyField(
         "self", related_name="followers", symmetrical=False
     )
-
+    
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
