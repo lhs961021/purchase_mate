@@ -113,38 +113,41 @@ def etc(request):
 
 # 정렬 부분
 def all_postlist(request):
-    post = Post.objects.all()
-    postd=[]
-    
-    for i in post:
-        lt=[]
-        address = request.user.profile.address
-        location = geocoder.osm(address)
-        lat = location.lat
-        lng = location.lng
-    
-        #게시물에 올린 픽업 장소 주소
-        spot = i.spot
-        spot_location = geocoder.osm(spot)
-        spot_lat = spot_location.lat
-        spot_lng = spot_location.lng
+    if request.user.is_authenticated:
+        post = Post.objects.all()
+        postd=[]
         
-        radius = 6371  # km
-        dlat = math.radians(spot_lat-lat)
-        dlon = math.radians(spot_lng-lng)
-        a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-            * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-        d = radius * c
-        lt.append(i)
-        lt.append(d)
-        postd.append(lt)
+        for i in post:
+            lt=[]
+            address = request.user.profile.address
+            location = geocoder.osm(address)
+            lat = location.lat
+            lng = location.lng
         
-        
-    # return HttpResponse("hi")
-    # for j in postd:
-    #     print(j)
-    return render(request, "sort/all_postlist.html", {"post": postd})
+            #게시물에 올린 픽업 장소 주소
+            spot = i.spot
+            spot_location = geocoder.osm(spot)
+            spot_lat = spot_location.lat
+            spot_lng = spot_location.lng
+            
+            radius = 6371  # km
+            dlat = math.radians(spot_lat-lat)
+            dlon = math.radians(spot_lng-lng)
+            a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+                * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+            c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+            d = radius * c
+            lt.append(i)
+            lt.append(d)
+            postd.append(lt)
+            
+            
+        # return HttpResponse("hi")
+        # for j in postd:
+        #     print(j)
+        return render(request, "sort/all_postlist.html", {"post": postd})
+    else:
+        return redirect("account_login")
 
 
 def recent_postlist(request):
@@ -207,33 +210,35 @@ def makepost(request):
 
 
 def detail(request, id):
-    post = get_object_or_404(Post, pk=id)
+    if request.user.is_authenticated:
+        post = get_object_or_404(Post, pk=id)
 
-    post_writer=Profile.objects.get(user=post.writer)
+        post_writer=Profile.objects.get(user=post.writer)
 
-    address = request.user.profile.address
-    location = geocoder.osm(address)
-    lat = location.lat
-    lng = location.lng
-   
-    #게시물에 올린 픽업 장소 주소
-    spot = post.spot
-    spot_location = geocoder.osm(spot)
-    spot_lat = spot_location.lat
-    spot_lng = spot_location.lng
+        address = request.user.profile.address
+        location = geocoder.osm(address)
+        lat = location.lat
+        lng = location.lng
     
-    radius = 6371  # km
-    dlat = math.radians(spot_lat-lat)
-    dlon = math.radians(spot_lng-lng)
-    a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
-        * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-    d = radius * c
+        #게시물에 올린 픽업 장소 주소
+        spot = post.spot
+        spot_location = geocoder.osm(spot)
+        spot_lat = spot_location.lat
+        spot_lng = spot_location.lng
+        
+        radius = 6371  # km
+        dlat = math.radians(spot_lat-lat)
+        dlon = math.radians(spot_lng-lng)
+        a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat)) \
+            * math.cos(math.radians(spot_lat)) * math.sin(dlon/2) * math.sin(dlon/2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        d = radius * c
 
     
     
-    return render(request,'detail.html',{'post':post,'post_writer':post_writer,'d':d})
-
+        return render(request,'detail.html',{'post':post,'post_writer':post_writer,'d':d})
+    else:
+        return redirect("account_login")
 
 def create(request):
     makepost_post = Post()
