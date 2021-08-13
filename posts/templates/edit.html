@@ -4,7 +4,7 @@
 
 <section style="margin:0px 200px; margin-top:80px;">
 <h1> 게시물 수정하기 </h1><br>
-<form action="{%url 'posts:update' post.id%}" method="post">
+<form action="{%url 'posts:update' post.id%}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     <p><label for="category">카테고리 : </label>
         <select name="category" id="category">
