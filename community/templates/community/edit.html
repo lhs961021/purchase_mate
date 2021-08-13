@@ -6,7 +6,7 @@
 		<form action="{%url 'community:update' post.id%}" method="post" enctype="multipart/form-data">
 			{%csrf_token%}
 			<p>제목 : <input type="text" name="title" value="{{post.title}}" required></p>
-			<p>사진 : <input type="file" name="image"></p>
+			<p> 사진: <input type="file" name= "image" value="{{post.image}}">{{post.image}}</p>
 			<p>내용 :<textarea style="width: 100%;" type="text" name="body" id="" cols="50" rows="10"
 				required>{{post.body}}</textarea>
 			<button type="submit">제출</button>
