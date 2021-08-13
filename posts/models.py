@@ -17,7 +17,7 @@ class Post(models.Model):
     price = models.IntegerField(default=0)
     people = models.IntegerField(default=0, null=True)
     category = models.CharField(max_length=20)
-    image = models.ImageField(upload_to="blog/", blank=True, null=True)
+    image = models.ImageField(upload_to="blog/")
     chat = models.CharField(max_length=200, null=True)
     spot = models.CharField(max_length=200, null=True)
     distance = models.FloatField(default=0)

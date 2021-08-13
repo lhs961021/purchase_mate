@@ -207,7 +207,7 @@ def update(request, id):
     update_post.price=request.POST['price']
     update_post.people=request.POST['people']
     update_post.category=request.POST['category']
-    update_post.image=request.POST['image']
+    update_post.image=request.FILES.get('image')
     update_post.chat=request.POST['chat']
     update_post.spot=request.POST['spot']
     update_post.price_per_person=int(update_post.price)/int(update_post.people)
