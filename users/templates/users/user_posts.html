@@ -55,9 +55,7 @@
             모집인원 : {{post.people}} 명<br>
             공구 마감일 : {{post.deadline}}<br>
             작성자 : {{post.writer}} 
-            {% if request.user.is_authenticated %}
-            <br>픽업 거리 : {{post.distance}} km
-            {% endif %}
+
 
         </div>
     </div>
