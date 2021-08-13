@@ -71,3 +71,4 @@ https://wave1994.tistory.com/100 참고
 ## 6. 배포
 
 서버 배포는 aws EC2의 Ubuntu Server 18.04 LTS (HVM), SSD Volume Type - 64bit, t2.micro(프리티어) 인스턴스를 이용한다. 
+https://3.138.192.5
