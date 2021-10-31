@@ -45,7 +45,8 @@ def update(request, id):
     update_post.writer = request.user
     update_post.pub_date = timezone.now()
     update_post.body = request.POST["body"]
-    update_post.image = request.FILES.get("image")
+    if request.FILES.get('image'):
+        update_post.image=request.FILES.get('image')
     update_post.save()
     return redirect("community:detail", update_post.id)
 
